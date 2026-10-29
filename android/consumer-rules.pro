@@ -1,0 +1,4 @@
+-keep class org.jmrtd.** { *; }
+-keep class net.sf.scuba.** { *; }
+-keep class org.bouncycastle.** { *; }
+-keep class org.spongycastle.** { *; }

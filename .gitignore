@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.swiftpm/
+.build/
+.DS_Store
+*.tgz
+.env
+.env.*
+.npmrc
+*.p12
+*.p8
+*.mobileprovision
+*.keystore
+*.jks
+local.properties
+**/build/

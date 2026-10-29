@@ -1,0 +1,61 @@
+{
+    "name": "capacitor-id-reader",
+    "version": "0.2.0",
+    "description": "Capacitor NFC reader for ICAO electronic identity documents",
+    "keywords": [
+        "capacitor",
+        "nfc",
+        "mrz",
+        "passport",
+        "identity-document",
+        "icao"
+    ],
+    "type": "module",
+    "packageManager": "pnpm@10.5.2",
+    "license": "MIT",
+    "engines": {
+        "node": ">=22"
+    },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist",
+        "android",
+        "ios",
+        "Package.swift",
+        "IdReader.podspec",
+        "THIRD_PARTY_NOTICES.md",
+        "AUDIT.md"
+    ],
+    "scripts": {
+        "build": "tsc -p tsconfig.json",
+        "check": "tsc -p tsconfig.json --noEmit",
+        "test": "pnpm run build && node --test test/*.test.mjs",
+        "prepack": "pnpm run build"
+    },
+    "peerDependencies": {
+        "@capacitor/core": "^8.0.0"
+    },
+    "devDependencies": {
+        "@capacitor/android": "^8.5.3",
+        "@capacitor/core": "^8.0.0",
+        "prettier": "^3.9.10",
+        "typescript": "^5.9.0"
+    },
+    "capacitor": {
+        "ios": {
+            "src": "ios"
+        },
+        "android": {
+            "src": "android"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/muzychenka/capacitor-id-reader.git"
+    },
+    "homepage": "https://github.com/muzychenka/capacitor-id-reader#readme",
+    "bugs": {
+        "url": "https://github.com/muzychenka/capacitor-id-reader/issues"
+    }
+}

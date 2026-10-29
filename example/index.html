@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>ID Reader Example</title>
+<style>body{font:16px system-ui;margin:0;padding:24px;max-width:500px}main{display:grid;gap:12px}button,input{font:inherit;padding:12px}label{display:grid;gap:4px}#status{white-space:pre-wrap;overflow-wrap:anywhere}button:disabled{opacity:.5}</style></head>
+<body><main><h1>ID Reader Example</h1><p>Test with a consented sample document. Do not use screenshots containing real personal data.</p>
+<button id="scan">Scan MRZ</button><label>Document number<input id="number" autocomplete="off" autocapitalize="characters"></label>
+<label>Date of birth (YYMMDD)<input id="dob" inputmode="numeric" autocomplete="off"></label><label>Expiry (YYMMDD)<input id="expiry" inputmode="numeric" autocomplete="off"></label>
+<label><span><input id="include-dg2" type="checkbox"> Read DG2 face image</span></label><button id="read">Read NFC chip</button><button id="cancel">Cancel NFC read (Android)</button><button id="clear">Clear</button><div role="status" id="status">Ready</div><section id="result" hidden><h2>Document data (DG1)</h2><img id="face-image" alt="Face image from the document" hidden style="max-width:100%;height:auto"><dl id="document-data"></dl></section></main>
+<script type="module" src="/src.js"></script></body></html>

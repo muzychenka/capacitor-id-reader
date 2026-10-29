@@ -1,0 +1,26 @@
+{
+    "name": "id-reader-example",
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "packageManager": "pnpm@10.5.2",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite"
+    },
+    "dependencies": {
+        "@capacitor/android": "8.5.3",
+        "@capacitor/core": "8.5.3",
+        "@capacitor/ios": "8.5.3",
+        "capacitor-id-reader": "link:.."
+    },
+    "devDependencies": {
+        "@capacitor/cli": "8.5.3",
+        "vite": "^6.4.0"
+    },
+    "pnpm": {
+        "overrides": {
+            "xcode>uuid": "11.1.1"
+        }
+    }
+}
