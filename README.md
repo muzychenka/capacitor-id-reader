@@ -1,6 +1,6 @@
-# Capacitor ID Reader
+# Capacitor ID Reader — ID Card and Passport Scanner
 
-Read the MRZ from a document camera scan and access the DG1 data group and optionally the DG2 face image of an ICAO-compatible electronic passport or identity document over NFC. The plugin works with Capacitor 8 and does not depend on a particular UI framework or identity-verification provider.
+A Capacitor plugin for scanning the MRZ on an ID card or passport with the camera and reading an ICAO-compatible document chip over NFC on iOS and Android. It returns DG1 document data and can optionally read the DG2 face image. Works with Capacitor 8 and Ionic applications, independently of the UI framework or identity-verification provider.
 
 > **Compatibility:** DG2 face-image reading has been tested on physical iOS and Android devices. Camera scanning and NFC reading have also been tested on both platforms. Document and device compatibility varies; test the exact version with the documents your application supports. Android build and regression checks for the latest audit changes are still outstanding. See `AUDIT.md` for the audit and remaining limitations.
 
