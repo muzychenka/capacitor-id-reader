@@ -1,6 +1,6 @@
 {
     "name": "capacitor-id-reader",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Capacitor NFC reader for ICAO electronic identity documents",
     "keywords": [
         "capacitor",
