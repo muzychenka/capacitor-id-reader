@@ -1,0 +1,76 @@
+name: Document or device compatibility
+description: Report a successful test or a problem with an electronic document.
+title: '[Compatibility]: '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing! Issues are public. **Do not include personal data**: names, document numbers, MRZ strings, birth dates, access keys, face images, screenshots of documents, or unredacted logs.
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: Outcome
+      options:
+        - Works
+        - Does not work
+        - Partially works
+    validations:
+      required: true
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      placeholder: e.g. 0.2.3
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device model and operating system version
+      placeholder: e.g. iPhone 15, iOS 18 or Pixel 8, Android 15
+    validations:
+      required: true
+  - type: input
+    id: document
+    attributes:
+      label: Issuing country and document type
+      description: Include the approximate issue year if known. Do not include document numbers or other personal details.
+      placeholder: e.g. Germany, passport, issued in 2022
+    validations:
+      required: true
+  - type: dropdown
+    id: protocol
+    attributes:
+      label: Chip access protocol, if known
+      options:
+        - Unknown
+        - BAC
+        - PACE using MRZ
+        - PACE using CAN
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Step tested or affected
+      options:
+        - MRZ camera scan
+        - NFC availability or session
+        - Chip access (BAC / PACE)
+        - DG1 document data
+        - DG2 face image
+        - Other or multiple steps
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: What happened?
+      description: Describe the steps, expected result, actual result, and error code if any. Redact personal information and avoid raw logs.
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I have checked that this report contains no personal document data or unredacted logs.
+          required: true
