@@ -13,5 +13,5 @@ let package = Package(
         .product(name: "Cordova", package: "capacitor-swift-pm"),
         .product(name: "NFCPassportReader", package: "NFCPassportReader")
     ], path: "ios/Sources/IdReaderPlugin"),
-    .testTarget(name: "IdReaderPluginTests", dependencies: ["IdReaderPlugin"], path: "ios/Tests/IdReaderPluginTests")]
+    .testTarget(name: "IdReaderPluginTests", dependencies: ["IdReaderPlugin"], path: "ios/Tests/IdReaderPluginTests", exclude: ["mrz-fixtures.tsv"])]
 )

@@ -54,3 +54,14 @@ Sources: https://api.osv.dev and https://repo.maven.apache.org/maven2/org/jmrtd/
 8. The example displays identity data in memory; host applications must implement their own data minimization, screen privacy, lifecycle cleanup and retention rules. A compromised host WebView can access the plugin API by design.
 
 The 0.1.0 version was published after this audit. Rebuild and re-test the exact tarball for each subsequent release; only a beta tag is appropriate while these gates remain open.
+
+
+## Follow-up review — current checkout
+
+- Added a shared MRZ fixture set consumed by TypeScript, Swift and Java, including valid TD1/TD3, OCR substitutions, corrupted check digits, an empty document number, a bad header and an unsupported extended number. This is a regression suite, not proof of coverage for every document.
+- iOS now rejects a result if DG1 was not read. Android closes the NFC transport before resolving a completed read and can report available groups when COM can be read. These changes need device regression tests, including cancellation, tag loss and immediate retry. Cancellation can return before a blocked Android read has fully unwound; a new request may temporarily return NFC_BUSY.
+- DG2 still crosses the bridge as Base64 and may cause multiple copies in memory, including an iOS JPEG preview. The image size check is not a bound on the upstream parser's allocations. A secure temporary-file API and cleanup contract remain unimplemented.
+- PACE/BAC fallback and some NFC error classification remain platform-specific. No claim of security equivalence is made. Neither passive authentication nor trust validation is implemented.
+- GitHub Actions run 40829360541 reported that jobs did not start because of failed account payments or a spending limit. Account billing must be resolved before CI can run; this is not a compilation result.
+- The changed Android NFC Java source compiles against Android API and JMRTD/Scuba libraries using stubbed Capacitor interfaces. This is not an Android Gradle build or a real-device NFC test.
+- This follow-up does not constitute an independent security audit or a complete production validation.

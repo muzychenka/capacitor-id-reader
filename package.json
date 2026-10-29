@@ -1,6 +1,6 @@
 {
     "name": "capacitor-id-reader",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "Capacitor ID card and passport scanner: MRZ camera scanning and NFC chip reading for iOS and Android",
     "keywords": [
         "capacitor",

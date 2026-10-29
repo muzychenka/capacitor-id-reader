@@ -1,7 +1,13 @@
 package dev.idreader.capacitor;
 import java.util.Arrays;
 public class MrzLinesTest {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        java.nio.file.Path fixtures = java.nio.file.Paths.get("ios/Tests/IdReaderPluginTests/mrz-fixtures.tsv");
+        for (String row : java.nio.file.Files.readAllLines(fixtures)) {
+            String[] fields = row.split("\\t", -1);
+            boolean actual = MrzLines.find(Arrays.asList(fields[2], fields[3])) != null;
+            if (actual != fields[1].equals("valid")) throw new AssertionError(fields[0]);
+        }
         String td1a = "I<UTOD231458907<<<<<<<<<<<<<<<";
         String td1b = "7408122F1204159UTO<<<<<<<<<<<6";
         String td3a = "P<UTOERIKSSON<<ANNA<MARIA<<<<<<<<<<<<<<<<<<<";

@@ -25,6 +25,8 @@ import org.jmrtd.PassportService;
 import org.jmrtd.lds.CardAccessFile;
 import org.jmrtd.lds.PACEInfo;
 import org.jmrtd.lds.SecurityInfo;
+import org.jmrtd.lds.icao.COMFile;
+import org.jmrtd.lds.LDSFileUtil;
 import org.jmrtd.lds.icao.DG1File;
 import org.jmrtd.lds.icao.DG2File;
 import org.jmrtd.lds.iso19794.FaceInfo;
@@ -222,22 +224,34 @@ public class NfcIdReaderPlugin extends Plugin {
             if (pendingCall != call) { reading.set(false); return; }
             activeIsoDep = isoDep;
         }
+        JSObject result = null;
+        String errorCode = null;
+        String errorMessage = null;
         try {
             isoDep.setTimeout(ISO_DEP_TIMEOUT_MS);
-            JSObject result = readMrz(isoDep, key, call, includeDG2);
-            if (finish(call)) call.resolve(result);
+            result = readMrz(isoDep, key, call, includeDG2);
         } catch (Dg2ReadException error) {
-            if (finish(call)) call.reject("Could not read a supported DG2 face image", "NFC_DG2_READ_FAILED");
+            errorCode = "NFC_DG2_READ_FAILED";
+            errorMessage = "Could not read a supported DG2 face image";
         } catch (android.nfc.TagLostException error) {
-            if (finish(call)) call.reject("The document was moved away before the read finished", ERROR_TAG_LOST);
+            errorCode = ERROR_TAG_LOST;
+            errorMessage = "The document was moved away before the read finished";
         } catch (Exception error) {
-            // jMRTD reports a rejected access key as a generic failure, so the MRZ key is the
-            // likeliest cause of a failure that happens once the chip is already talking to us.
-            if (finish(call)) call.reject("Could not read the chip", ERROR_READ_FAILED);
+            errorCode = ERROR_READ_FAILED;
+            errorMessage = "Could not read the chip";
         } finally {
-            synchronized (pendingLock) { activeIsoDep = null; }
             try { isoDep.close(); } catch (Exception ignored) { }
+        }
+        // Remove the old request and release the read gate together before resolving it.
+        boolean completed;
+        synchronized (pendingLock) {
+            activeIsoDep = null;
+            completed = finish(call);
             reading.set(false);
+        }
+        if (completed) {
+            if (errorCode == null) call.resolve(result);
+            else call.reject(errorMessage, errorCode);
         }
     }
 
@@ -260,9 +274,20 @@ public class NfcIdReaderPlugin extends Plugin {
             if (!paceSucceeded) {
                 service.doBAC(key);
             }
+            JSObject result;
             try (InputStream dg1Stream = service.getInputStream(PassportService.EF_DG1)) {
                 MRZInfo mrzInfo = new DG1File(dg1Stream).getMRZInfo();
-                JSObject result = toResult(mrzInfo);
+                result = toResult(mrzInfo);
+            }
+            // COM is optional metadata. An unreadable COM must not prevent DG1/DG2 reading.
+            try (InputStream comStream = service.getInputStream(PassportService.EF_COM)) {
+                JSArray available = new JSArray();
+                for (int group : LDSFileUtil.getDataGroupNumbers(new COMFile(comStream))) available.put("DG" + group);
+                result.put("availableDataGroups", available);
+            } catch (android.nfc.TagLostException error) { throw error; }
+              catch (Exception ignored) { /* Some documents do not expose COM. */ }
+            {
+
                 if (includeDG2) {
                     try (InputStream dg2Stream = service.getInputStream(PassportService.EF_DG2)) {
                         DG2File dg2 = new DG2File(dg2Stream);

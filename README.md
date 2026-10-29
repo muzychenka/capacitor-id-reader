@@ -55,7 +55,7 @@ The host app owns the surrounding UI, translations, error handling and data rete
 | `readDocument(key)` | Reads DG1 and optionally DG2 using MRZ-derived access data and BAC or PACE where supported.                                                      |
 | `cancel()`          | Cancels an Android NFC read. On iOS the user dismisses the NFC sheet; this method rejects with `NFC_CANCEL_UNSUPPORTED`.                         |
 
-`readDocument` accepts `{ documentNumber, dateOfBirth, dateOfExpiry }`. Dates are six digits in MRZ `YYMMDD` format. It returns document code and number, issuing state, nationality, names, dates, gender and, when available, personal number and data-group information. Availability and formatting can vary by document and platform.
+`readDocument` accepts `{ documentNumber, dateOfBirth, dateOfExpiry }`. Dates are six digits in MRZ `YYMMDD` format. It returns document code and number, issuing state, nationality, names, dates, gender and, when available, personal number and data-group information. Availability and formatting can vary by document and platform. `availableDataGroups` is optional: it is returned when the document's COM data can be read.
 
 Methods reject on errors. Use the exported `ENfcIdReaderError` codes for cases such as cancellation, unavailable hardware, denied camera permission and an ongoing read. A failed chip read is not guaranteed to identify the precise cause; offer a retry and check the document and MRZ input. DG1 is always read. DG2 is opt-in; other data groups are not supported.
 
@@ -91,7 +91,7 @@ if (image) {
 }
 ```
 
-`faceImage` contains original image bytes encoded as base64 and a MIME type of `image/jpeg` or `image/jp2`. JPEG 2000 (`image/jp2`) may require a decoder and is not universally supported by browsers. On iOS, when native decoding succeeds, `previewJpegBase64` contains a JPEG preview; the original image remains in `base64`. If DG2 was requested but cannot be read or the image is missing, unsupported or larger than 8 MiB, the call rejects with `NFC_DG2_READ_FAILED`. Reading DG2 takes longer and requires keeping the phone against the document. DG2 reading does not prove authenticity or identity. Face images are sensitive biometric data: request them only when necessary and do not log them.
+`faceImage` contains original image bytes encoded as base64 and a MIME type of `image/jpeg` or `image/jp2`. JPEG 2000 (`image/jp2`) may require a decoder and is not universally supported by browsers. On iOS, when native decoding succeeds, `previewJpegBase64` contains a JPEG preview; the original image remains in `base64`. If DG2 was requested but cannot be read or the image is missing, unsupported or larger than 8 MiB, the call rejects with `NFC_DG2_READ_FAILED`. Reading DG2 takes longer and requires keeping the phone against the document. Base64 increases data size by roughly one third and the bridge and optional JPEG preview can create additional in-memory copies. The 8 MiB check limits returned image bytes; it is not a bound on all memory used while parsing the chip data. DG2 reading does not prove authenticity or identity. Face images are sensitive biometric data: request them only when necessary and do not log them.
 
 ## iOS setup
 

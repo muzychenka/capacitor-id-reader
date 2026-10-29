@@ -31,3 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: xcodebuild -scheme CapacitorIdReader -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+      - name: Run Swift MRZ tests
+        run: |
+          DEVICE_ID=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for group in d["devices"].values() for x in group if x["isAvailable"] and x["name"].startswith("iPhone")))')
+          xcodebuild -scheme CapacitorIdReader -destination "platform=iOS Simulator,id=$DEVICE_ID" CODE_SIGNING_ALLOWED=NO test

@@ -51,3 +51,16 @@ test('rejects empty document numbers and nonnumeric access dates even with match
     assert.equal(parseMrz([passport[0], invalid]), undefined)
     assert.equal(parseMrz(['X'.repeat(44), passport[1]]), undefined)
 })
+
+// The same anonymized fixtures are exercised by the Swift and Android parsers.
+test('shared native MRZ fixtures', async () => {
+    const { readFile } = await import('node:fs/promises')
+    const text = await readFile(
+        new URL('../ios/Tests/IdReaderPluginTests/mrz-fixtures.tsv', import.meta.url),
+        'utf8'
+    )
+    for (const row of text.trim().split('\n')) {
+        const [name, expected, first, second] = row.split('\t')
+        assert.equal(Boolean(parseMrz([first, second])), expected === 'valid', name)
+    }
+})

@@ -84,6 +84,10 @@ public class NfcIdReaderPlugin: CAPPlugin, CAPBridgedPlugin {
                     tags: includeDG2 ? [.DG1, .DG2] : [.DG1],
                     skipSecureElements: false
                 )
+                guard passport.dataGroupsRead[.DG1] != nil else {
+                    call.reject("Could not read DG1", "NFC_READ_FAILED")
+                    return
+                }
                 var result = self.toResult(passport)
                 if includeDG2 {
                     guard let dg2 = passport.dataGroupsRead[.DG2] as? DataGroup2,
