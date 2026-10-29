@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
-  s.name = 'IdReader'
-  s.version = '0.2.2'
+  s.name = 'CapacitorIdReader'
+  s.version = '0.2.3'
   s.summary = 'Capacitor NFC reader for ICAO identity documents'
   s.homepage = 'https://github.com/muzychenka/capacitor-id-reader'
   s.license = { :type => 'MIT', :file => 'LICENSE' }
